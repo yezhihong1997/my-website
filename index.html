@@ -3,24 +3,109 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>我的测试网页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的多功能网页模板</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f8ff; text-align: center; }
-        h1 { color: #007acc; }
-        p { font-size: 18px; color: #333; }
+        /* ========== 全局样式 ========== */
+        body { font-family: Arial, sans-serif; margin:0; padding:0; background-color: #f0f8ff; }
+        a { text-decoration: none; color: inherit; }
+        h1, h2, h3 { color: #007acc; margin: 0.5em 0; }
+
+        /* ========== 导航栏 ========== */
+        nav {
+            background-color: #007acc;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a { color: white; margin: 0 10px; font-weight: bold; }
+        nav a:hover { color: #ffeb3b; }
+
+        /* ========== 内容区块 ========== */
+        section { padding: 40px 20px; max-width: 800px; margin: auto; }
+        .intro { background-color: #e6f2ff; border-radius: 10px; }
+        .features { background-color: #d9edf7; border-radius: 10px; margin-top: 20px; }
+        .contact { background-color: #cce5ff; border-radius: 10px; margin-top: 20px; }
+
+        /* ========== 按钮样式 ========== */
         .button {
             background-color: #007acc;
             color: white;
             padding: 10px 20px;
-            text-decoration: none;
             border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
         }
         .button:hover { background-color: #005f99; }
+
+        /* ========== 表格样式 ========== */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #007acc; padding: 8px; text-align: center; }
+        th { background-color: #007acc; color: white; }
+
+        /* ========== 图片样式 ========== */
+        img { max-width: 100%; border-radius: 10px; }
+
+        /* 响应式 */
+        @media(max-width:600px) {
+            nav { flex-direction: column; }
+            nav a { margin: 5px 0; }
+        }
     </style>
 </head>
 <body>
-    <h1>欢迎来到我的测试网页</h1>
-    <p>这是一个由 Python 生成的静态网页示例。</p>
-    <a href="https://github.com" class="button">访问 GitHub</a>
+
+    <!-- 导航栏 -->
+    <nav>
+        <div><strong>我的网站</strong></div>
+        <div>
+            <a href="#intro">首页</a>
+            <a href="#features">功能</a>
+            <a href="#contact">联系</a>
+        </div>
+    </nav>
+
+    <!-- 首页简介 -->
+    <section id="intro" class="intro">
+        <h1>欢迎来到我的多功能网页模板</h1>
+        <p>这是一个由 Python 自动生成的网页示例，适合未来扩展为个人或项目网站。</p>
+        <a href="#features" class="button">查看功能</a>
+    </section>
+
+    <!-- 功能区 -->
+    <section id="features" class="features">
+        <h2>示例功能</h2>
+        <ul>
+            <li>导航栏链接跳转</li>
+            <li>多区块排版</li>
+            <li>表格显示数据</li>
+            <li>按钮和交互</li>
+            <li>响应式布局，适配手机和平板</li>
+        </ul>
+        <h3>示例表格</h3>
+        <table>
+            <tr><th>序号</th><th>名称</th><th>状态</th></tr>
+            <tr><td>1</td><td>功能 A</td><td>完成</td></tr>
+            <tr><td>2</td><td>功能 B</td><td>开发中</td></tr>
+            <tr><td>3</td><td>功能 C</td><td>未开始</td></tr>
+        </table>
+    </section>
+
+    <!-- 联系区 -->
+    <section id="contact" class="contact">
+        <h2>联系我们</h2>
+        <p>Email: example@email.com</p>
+        <p>GitHub: <a href="https://github.com/yezhihong1997" target="_blank">yezhihong1997</a></p>
+        <img src="https://via.placeholder.com/600x200.png?text=示例图片" alt="示例图片">
+    </section>
+
+    <script>
+        // 示例：按钮点击弹窗
+        document.querySelectorAll('.button').forEach(btn => {
+            btn.addEventListener('click', () => alert('你点击了按钮!'));
+        });
+    </script>
+
 </body>
 </html>
