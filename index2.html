@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PFAS 数据检索</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f0f8ff;
+}
+nav {
+    background-color: #007acc;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav a {
+    color: white;
+    font-weight: bold;
+}
+section {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 30px;
+    background: #e6f2ff;
+    border-radius: 10px;
+}
+h1, h2 {
+    color: #007acc;
+}
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+label {
+    font-weight: bold;
+}
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #007acc;
+}
+.button {
+    margin-top: 20px;
+    padding: 10px 25px;
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button:hover {
+    background: #005f99;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+}
+th, td {
+    border: 1px solid #007acc;
+    padding: 6px;
+    text-align: center;
+}
+th {
+    background: #007acc;
+    color: white;
+}
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+.pagination button {
+    margin: 0 5px;
+    padding: 6px 12px;
+}
+@media (max-width: 700px) {
+    .search-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div><strong>PFAS 数据检索系统</strong></div>
+    <div><a href="index.html">返回首页</a></div>
+</nav>
+
+<section>
+<h1>数据检索</h1>
+
+<div class="search-grid">
+    <div>
+        <label>PollutantName.ABB</label>
+        <input id="pollutantInput" placeholder="如 PFOS">
+    </div>
+    <div>
+        <label>Sample Type</label>
+        <input id="sampleInput" placeholder="如 Fish">
+    </div>
+    <div>
+        <label>Sampling Time</label>
+        <input id="timeInput" placeholder="如 2021">
+    </div>
+    <div>
+        <label>Country</label>
+        <input id="countryInput" placeholder="如 China">
+    </div>
+</div>
+
+<button class="button" onclick="applyFilter()">开始检索</button>
+
+<h2>检索结果</h2>
+
+<table>
+<thead>
+<tr>
+    <th>序号</th>
+    <th>PollutantName.ABB</th>
+    <th>Sample Type</th>
+    <th>Sampling Time</th>
+    <th>Country</th>
+    <th>Mean (ng/g)</th>
+</tr>
+</thead>
+<tbody id="resultBody"></tbody>
+</table>
+
+<div class="pagination" id="pagination"></div>
+
+</section>
+
+<script>
+let rawData = [];
+let filteredData = [];
+let currentPage = 1;
+const pageSize = 50;
+
+// 读取 data.json
+fetch("data.json")
+    .then(res => res.json())
+    .then(data => {
+        rawData = data;
+        filteredData = data;
+        renderTable();
+    });
+
+// 过滤逻辑
+function applyFilter() {
+    const p = pollutantInput.value.toLowerCase();
+    const s = sampleInput.value.toLowerCase();
+    const t = timeInput.value.toLowerCase();
+    const c = countryInput.value.toLowerCase();
+
+    filteredData = rawData.filter(row =>
+        (!p || String(row["PollutantName.ABB"] || "").toLowerCase().includes(p)) &&
+        (!s || String(row["Sample Type"] || "").toLowerCase().includes(s)) &&
+        (!t || String(row["Sampling Time"] || "").toLowerCase().includes(t)) &&
+        (!c || String(row["Country"] || "").toLowerCase().includes(c))
+    );
+
+    currentPage = 1;
+    renderTable();
+}
+
+// 渲染表格
+function renderTable() {
+    const body = document.getElementById("resultBody");
+    body.innerHTML = "";
+
+    const start = (currentPage - 1) * pageSize;
+    const pageData = filteredData.slice(start, start + pageSize);
+
+    pageData.forEach((row, idx) => {
+        body.innerHTML += `
+        <tr>
+            <td>${start + idx + 1}</td>
+            <td>${row["PollutantName.ABB"] ?? ""}</td>
+            <td>${row["Sample Type"] ?? ""}</td>
+            <td>${row["Sampling Time"] ?? ""}</td>
+            <td>${row["Country"] ?? ""}</td>
+            <td>${row["Mean (ng/g)"] ?? ""}</td>
+        </tr>`;
+    });
+
+    renderPagination();
+}
+
+// 翻页
+function renderPagination() {
+    const pageCount = Math.ceil(filteredData.length / pageSize);
+    const box = document.getElementById("pagination");
+    box.innerHTML = "";
+
+    for (let i = 1; i <= pageCount; i++) {
+        box.innerHTML += `<button onclick="gotoPage(${i})">${i}</button>`;
+    }
+}
+
+function gotoPage(p) {
+    currentPage = p;
+    renderTable();
+}
+</script>
+
+</body>
+</html>
