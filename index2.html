@@ -500,6 +500,47 @@
             0% { background-color: #fff3cd; }
             100% { background-color: transparent; }
         }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .home-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .home-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .header-right {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-end;
+            }
+
+            .home-link {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -509,8 +550,14 @@
                 <div class="logo-icon">PFAS</div>
                 <h1>PFAS 数据检索分析系统</h1>
             </div>
-            <div style="color: rgba(255,255,255,0.9); font-size: 14px;">
-                动态数据加载 • 实时检索
+            <div class="header-right">
+                <a href="index.html" class="home-link">
+                    <span>🏠</span>
+                    返回主页
+                </a>
+                <div style="color: rgba(255,255,255,0.9); font-size: 14px;">
+                    动态数据加载 • 实时检索
+                </div>
             </div>
         </header>
 
