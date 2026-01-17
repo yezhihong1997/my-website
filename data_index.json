@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "source_file": "PFAS in Food org-20241113.xlsx",
+    "sheet_name": "Sheet1",
+    "total_rows": 35546,
+    "total_columns": 25,
+    "chunk_size": 5000,
+    "num_chunks": 8,
+    "generated_at": "2026-01-17T19:26:26.073003"
+  },
+  "chunks": [
+    {
+      "file": "data_chunk_1.json",
+      "chunk": 1,
+      "rows": 5000,
+      "range": "1-5000",
+      "size_mb": 5.18
+    },
+    {
+      "file": "data_chunk_2.json",
+      "chunk": 2,
+      "rows": 5000,
+      "range": "5001-10000",
+      "size_mb": 4.97
+    },
+    {
+      "file": "data_chunk_3.json",
+      "chunk": 3,
+      "rows": 5000,
+      "range": "10001-15000",
+      "size_mb": 4.93
+    },
+    {
+      "file": "data_chunk_4.json",
+      "chunk": 4,
+      "rows": 5000,
+      "range": "15001-20000",
+      "size_mb": 5.08
+    },
+    {
+      "file": "data_chunk_5.json",
+      "chunk": 5,
+      "rows": 5000,
+      "range": "20001-25000",
+      "size_mb": 5.02
+    },
+    {
+      "file": "data_chunk_6.json",
+      "chunk": 6,
+      "rows": 5000,
+      "range": "25001-30000",
+      "size_mb": 5.13
+    },
+    {
+      "file": "data_chunk_7.json",
+      "chunk": 7,
+      "rows": 5000,
+      "range": "30001-35000",
+      "size_mb": 4.97
+    },
+    {
+      "file": "data_chunk_8.json",
+      "chunk": 8,
+      "rows": 546,
+      "range": "35001-35546",
+      "size_mb": 0.56
+    }
+  ]
+}

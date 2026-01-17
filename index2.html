@@ -1,218 +1,1198 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PFAS 数据检索</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFAS 数据检索系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background-color: #f0f8ff;
-}
-nav {
-    background-color: #007acc;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-nav a {
-    color: white;
-    font-weight: bold;
-}
-section {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 30px;
-    background: #e6f2ff;
-    border-radius: 10px;
-}
-h1, h2 {
-    color: #007acc;
-}
-.search-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-label {
-    font-weight: bold;
-}
-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #007acc;
-}
-.button {
-    margin-top: 20px;
-    padding: 10px 25px;
-    background: #007acc;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.button:hover {
-    background: #005f99;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-}
-th, td {
-    border: 1px solid #007acc;
-    padding: 6px;
-    text-align: center;
-}
-th {
-    background: #007acc;
-    color: white;
-}
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
-.pagination button {
-    margin: 0 5px;
-    padding: 6px 12px;
-}
-@media (max-width: 700px) {
-    .search-grid {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #007acc 0%, #005a9e 100%);
+            color: white;
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #007acc;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .status-bar {
+            background: #e8f4ff;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #d0e3ff;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007acc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .search-section {
+            padding: 30px 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: "🔍";
+            font-size: 18px;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .search-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .search-field label {
+            font-weight: 600;
+            color: #444;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .search-field label::before {
+            content: "📌";
+            font-size: 12px;
+        }
+
+        .search-input {
+            padding: 12px 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #007acc;
+            box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007acc 0%, #005a9e 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 122, 204, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .results-section {
+            padding: 30px 40px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .results-count {
+            font-size: 14px;
+            color: #666;
+            background: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .results-count strong {
+            color: #007acc;
+            font-size: 16px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #e1e5eb;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #007acc 0%, #005a9e 100%);
+            color: white;
+        }
+
+        th {
+            padding: 16px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e1e5eb;
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        td {
+            padding: 14px 12px;
+            font-size: 14px;
+            color: #444;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .cell-content {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: help;
+        }
+
+        .cell-content:hover::after {
+            content: attr(title);
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            z-index: 100;
+            white-space: normal;
+            max-width: 300px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 8px 16px;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #007acc;
+            color: white;
+            border-color: #007acc;
+        }
+
+        .pagination button.active {
+            background: #007acc;
+            color: white;
+            border-color: #007acc;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            margin: 0 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .data-files-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        .data-files-info h4 {
+            color: #007acc;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .data-files-info h4::before {
+            content: "📁";
+        }
+
+        .file-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .file-badge {
+            background: #e9ecef;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .file-badge::before {
+            content: "📄";
+            font-size: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #e1e5eb;
+            background: #f8f9fa;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .no-data::before {
+            content: "📊";
+            font-size: 40px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+
+            header, .status-bar, .search-section, .results-section {
+                padding: 20px;
+            }
+
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .results-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+            }
+        }
+
+        .export-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .export-format {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .highlight {
+            animation: highlight 1.5s ease;
+        }
+
+        @keyframes highlight {
+            0% { background-color: #fff3cd; }
+            100% { background-color: transparent; }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">PFAS</div>
+                <h1>PFAS 数据检索分析系统</h1>
+            </div>
+            <div style="color: rgba(255,255,255,0.9); font-size: 14px;">
+                动态数据加载 • 实时检索
+            </div>
+        </header>
 
-<nav>
-    <div><strong>PFAS 数据检索系统</strong></div>
-    <div><a href="index.html">返回首页</a></div>
-</nav>
+        <div class="status-bar">
+            <div class="status-item">
+                <span>数据状态:</span>
+                <span class="status-badge info" id="dataStatus">检测中...</span>
+            </div>
+            <div class="status-item">
+                <span>文件数量:</span>
+                <span class="status-badge info" id="fileCount">0</span>
+            </div>
+            <div class="status-item">
+                <span>总记录数:</span>
+                <span class="status-badge success" id="totalRecords">0</span>
+            </div>
+            <div class="status-item">
+                <span>筛选记录:</span>
+                <span class="status-badge warning" id="filteredRecords">0</span>
+            </div>
+        </div>
 
-<section>
-<h1>数据检索</h1>
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <div style="text-align: center;">
+                <h3 style="color: #007acc; margin-bottom: 10px;">正在加载数据...</h3>
+                <p id="loadingText" style="color: #666; max-width: 400px;">
+                    正在检测并加载数据文件，请稍候...
+                </p>
+                <div id="fileProgress" style="margin-top: 20px; font-size: 14px; color: #888;"></div>
+            </div>
+        </div>
 
-<div class="search-grid">
-    <div>
-        <label>PollutantName.ABB</label>
-        <input id="pollutantInput" placeholder="如 PFOS">
+        <section class="search-section">
+            <h2 class="section-title">数据检索</h2>
+            <div class="search-grid">
+                <div class="search-field">
+                    <label for="pollutantInput">污染物名称 (PollutantName.ABB)</label>
+                    <input type="text" id="pollutantInput" class="search-input" 
+                           placeholder="例如: PFOS, PFOA, PFHxS">
+                </div>
+                <div class="search-field">
+                    <label for="sampleInput">样品类型 (Sample Type)</label>
+                    <input type="text" id="sampleInput" class="search-input" 
+                           placeholder="例如: Fish, Meat, Vegetable">
+                </div>
+                <div class="search-field">
+                    <label for="timeInput">采样时间 (Sampling Time)</label>
+                    <input type="text" id="timeInput" class="search-input" 
+                           placeholder="例如: 2021, 2022, 2023">
+                </div>
+                <div class="search-field">
+                    <label for="countryInput">国家/地区 (Country)</label>
+                    <input type="text" id="countryInput" class="search-input" 
+                           placeholder="例如: China, USA, Germany">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" id="searchButton">
+                    <span>🔍</span> 开始检索
+                </button>
+                <button class="btn btn-secondary" id="clearButton">
+                    <span>🗑️</span> 清空条件
+                </button>
+                <button class="btn btn-success" id="exportButton">
+                    <span>📥</span> 导出数据
+                </button>
+                <button class="btn btn-warning" id="reloadButton">
+                    <span>🔄</span> 重新加载
+                </button>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <div class="results-header">
+                <h2 class="section-title">检索结果</h2>
+                <div class="export-section">
+                    <select id="exportFormat" class="export-format">
+                        <option value="json">导出为 JSON</option>
+                        <option value="csv">导出为 CSV</option>
+                        <option value="excel">导出为 Excel</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="results-count">
+                共找到 <strong id="resultsCount">0</strong> 条记录，
+                显示第 <strong id="currentRange">0-0</strong> 条
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>污染物名称</th>
+                            <th>样品类型</th>
+                            <th>采样时间</th>
+                            <th>国家/地区</th>
+                            <th>平均值 (ng/g)</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultBody">
+                        <!-- 数据将通过JavaScript动态插入 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="noDataMessage" class="no-data" style="display: none;">
+                暂无数据或未找到匹配的记录
+            </div>
+
+            <div class="pagination" id="pagination">
+                <!-- 分页将通过JavaScript动态生成 -->
+            </div>
+
+            <div class="data-files-info">
+                <h4>已加载的数据文件</h4>
+                <div id="fileList" class="file-list">
+                    <!-- 文件列表将通过JavaScript动态生成 -->
+                </div>
+                <div id="fileStats" style="margin-top: 10px; font-size: 13px; color: #666;">
+                    <!-- 文件统计信息 -->
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>PFAS 数据检索系统 | 数据更新时间: <span id="updateTime">-</span></p>
+            <p style="margin-top: 5px; font-size: 12px; color: #888;">
+                本系统支持动态检测和加载数据文件，支持 data.json、data_part*.json、data_chunk_*.json 等格式
+            </p>
+        </footer>
     </div>
-    <div>
-        <label>Sample Type</label>
-        <input id="sampleInput" placeholder="如 Fish">
-    </div>
-    <div>
-        <label>Sampling Time</label>
-        <input id="timeInput" placeholder="如 2021">
-    </div>
-    <div>
-        <label>Country</label>
-        <input id="countryInput" placeholder="如 China">
-    </div>
-</div>
 
-<button class="button" onclick="applyFilter()">开始检索</button>
+    <script>
+        // 全局变量
+        let rawData = [];           // 原始数据
+        let filteredData = [];      // 过滤后的数据
+        let currentPage = 1;        // 当前页码
+        const pageSize = 100;       // 每页显示条数
+        let loadedFiles = [];       // 已加载的文件列表
+        let dataStats = {};         // 数据统计信息
 
-<h2>检索结果</h2>
+        // DOM 元素
+        const elements = {
+            loadingOverlay: document.getElementById('loadingOverlay'),
+            loadingText: document.getElementById('loadingText'),
+            fileProgress: document.getElementById('fileProgress'),
+            resultBody: document.getElementById('resultBody'),
+            pagination: document.getElementById('pagination'),
+            noDataMessage: document.getElementById('noDataMessage'),
+            resultsCount: document.getElementById('resultsCount'),
+            currentRange: document.getElementById('currentRange'),
+            fileList: document.getElementById('fileList'),
+            fileStats: document.getElementById('fileStats'),
+            dataStatus: document.getElementById('dataStatus'),
+            fileCount: document.getElementById('fileCount'),
+            totalRecords: document.getElementById('totalRecords'),
+            filteredRecords: document.getElementById('filteredRecords'),
+            updateTime: document.getElementById('updateTime'),
+            pollutantInput: document.getElementById('pollutantInput'),
+            sampleInput: document.getElementById('sampleInput'),
+            timeInput: document.getElementById('timeInput'),
+            countryInput: document.getElementById('countryInput'),
+            exportFormat: document.getElementById('exportFormat'),
+            searchButton: document.getElementById('searchButton'),
+            clearButton: document.getElementById('clearButton'),
+            exportButton: document.getElementById('exportButton'),
+            reloadButton: document.getElementById('reloadButton')
+        };
 
-<table>
-<thead>
-<tr>
-    <th>序号</th>
-    <th>PollutantName.ABB</th>
-    <th>Sample Type</th>
-    <th>Sampling Time</th>
-    <th>Country</th>
-    <th>Mean (ng/g)</th>
-</tr>
-</thead>
-<tbody id="resultBody"></tbody>
-</table>
+        // 显示/隐藏加载动画
+        function showLoading(show, text = '正在加载数据...') {
+            elements.loadingOverlay.classList.toggle('active', show);
+            if (show) {
+                elements.loadingText.textContent = text;
+            }
+        }
 
-<div class="pagination" id="pagination"></div>
+        // 更新加载进度
+        function updateProgress(current, total, filename) {
+            elements.fileProgress.innerHTML = `
+                <div>正在加载文件: ${filename}</div>
+                <div>进度: ${current}/${total}</div>
+                <progress value="${current}" max="${total}" style="width: 300px; margin-top: 5px;"></progress>
+            `;
+        }
 
-</section>
+        // 更新状态栏
+        function updateStatusBar() {
+            elements.dataStatus.textContent = loadedFiles.length > 0 ? '已加载' : '未加载';
+            elements.dataStatus.className = loadedFiles.length > 0 ? 'status-badge success' : 'status-badge warning';
 
-<script>
-let rawData = [];
-let filteredData = [];
-let currentPage = 1;
-const pageSize = 50;
+            elements.fileCount.textContent = loadedFiles.length;
+            elements.totalRecords.textContent = rawData.length;
+            elements.filteredRecords.textContent = filteredData.length;
 
-// 读取 data.json
-fetch("data.json")
-    .then(res => res.json())
-    .then(data => {
-        rawData = data;
-        filteredData = data;
-        renderTable();
-    });
+            // 更新时间
+            elements.updateTime.textContent = new Date().toLocaleString('zh-CN');
+        }
 
-// 过滤逻辑
-function applyFilter() {
-    const p = pollutantInput.value.toLowerCase();
-    const s = sampleInput.value.toLowerCase();
-    const t = timeInput.value.toLowerCase();
-    const c = countryInput.value.toLowerCase();
+        // 动态检测数据文件
+        async function detectDataFiles() {
+            console.log('开始检测数据文件...');
 
-    filteredData = rawData.filter(row =>
-        (!p || String(row["PollutantName.ABB"] || "").toLowerCase().includes(p)) &&
-        (!s || String(row["Sample Type"] || "").toLowerCase().includes(s)) &&
-        (!t || String(row["Sampling Time"] || "").toLowerCase().includes(t)) &&
-        (!c || String(row["Country"] || "").toLowerCase().includes(c))
-    );
+            const testFiles = [
+                'data.json',                    // 单个文件
+                'data_index.json'               // 索引文件
+            ];
 
-    currentPage = 1;
-    renderTable();
-}
+            // 添加可能的文件
+            for (let i = 1; i <= 10; i++) {
+                testFiles.push(`data_part${i}.json`);
+                testFiles.push(`data_chunk_${i}.json`);
+                testFiles.push(`pfas_data_${i}.json`);
+                testFiles.push(`dataset${i}.json`);
+            }
 
-// 渲染表格
-function renderTable() {
-    const body = document.getElementById("resultBody");
-    body.innerHTML = "";
+            const detectedFiles = new Set();
 
-    const start = (currentPage - 1) * pageSize;
-    const pageData = filteredData.slice(start, start + pageSize);
+            // 首先尝试索引文件
+            try {
+                const indexResponse = await fetch('data_index.json');
+                if (indexResponse.ok) {
+                    const index = await indexResponse.json();
+                    if (index.parts && Array.isArray(index.parts)) {
+                        index.parts.forEach(part => {
+                            if (part.file) detectedFiles.add(part.file);
+                        });
+                        console.log('从索引文件找到文件:', Array.from(detectedFiles));
+                    }
+                }
+            } catch (e) {
+                console.log('索引文件不存在或读取失败');
+            }
 
-    pageData.forEach((row, idx) => {
-        body.innerHTML += `
-        <tr>
-            <td>${start + idx + 1}</td>
-            <td>${row["PollutantName.ABB"] ?? ""}</td>
-            <td>${row["Sample Type"] ?? ""}</td>
-            <td>${row["Sampling Time"] ?? ""}</td>
-            <td>${row["Country"] ?? ""}</td>
-            <td>${row["Mean (ng/g)"] ?? ""}</td>
-        </tr>`;
-    });
+            // 并行测试文件是否存在
+            const testPromises = testFiles.map(async (filename) => {
+                try {
+                    const response = await fetch(filename, { method: 'HEAD' });
+                    if (response.ok) {
+                        return filename;
+                    }
+                } catch (error) {
+                    // 文件不存在
+                }
+                return null;
+            });
 
-    renderPagination();
-}
+            const results = await Promise.all(testPromises);
+            results.forEach(result => {
+                if (result) detectedFiles.add(result);
+            });
 
-// 翻页
-function renderPagination() {
-    const pageCount = Math.ceil(filteredData.length / pageSize);
-    const box = document.getElementById("pagination");
-    box.innerHTML = "";
+            console.log('最终检测到的文件:', Array.from(detectedFiles));
+            return Array.from(detectedFiles).sort();
+        }
 
-    for (let i = 1; i <= pageCount; i++) {
-        box.innerHTML += `<button onclick="gotoPage(${i})">${i}</button>`;
-    }
-}
+        // 加载单个文件
+        async function loadFile(filename, index, total) {
+            try {
+                updateProgress(index + 1, total, filename);
 
-function gotoPage(p) {
-    currentPage = p;
-    renderTable();
-}
-</script>
+                const response = await fetch(filename);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
 
+                const data = await response.json();
+                console.log(`文件 ${filename} 加载成功，${data.length} 条记录`);
+
+                return {
+                    filename,
+                    data,
+                    success: true,
+                    count: data.length,
+                    error: null
+                };
+            } catch (error) {
+                console.error(`加载文件 ${filename} 失败:`, error);
+                return {
+                    filename,
+                    data: [],
+                    success: false,
+                    count: 0,
+                    error: error.message
+                };
+            }
+        }
+
+        // 加载所有数据
+        async function loadAllData() {
+            showLoading(true, '正在检测数据文件...');
+            loadedFiles = [];
+            rawData = [];
+            filteredData = [];
+
+            try {
+                // 1. 检测文件
+                const files = await detectDataFiles();
+
+                if (files.length === 0) {
+                    showLoading(false);
+                    alert('未找到任何数据文件！\n请确保存在以下文件之一：\n• data.json\n• data_part1.json\n• data_chunk_1.json\n\n或运行数据转换脚本生成文件。');
+                    updateStatusBar();
+                    return;
+                }
+
+                // 2. 并行加载所有文件
+                showLoading(true, `正在加载 ${files.length} 个文件...`);
+
+                const loadPromises = files.map((file, index) => 
+                    loadFile(file, index, files.length)
+                );
+
+                const results = await Promise.all(loadPromises);
+
+                // 3. 处理结果
+                let successCount = 0;
+                results.forEach(result => {
+                    if (result.success) {
+                        loadedFiles.push({
+                            name: result.filename,
+                            count: result.count,
+                            size: JSON.stringify(result.data).length
+                        });
+                        rawData.push(...result.data);
+                        successCount++;
+                    } else {
+                        console.warn(`文件 ${result.filename} 加载失败: ${result.error}`);
+                    }
+                });
+
+                // 4. 处理数据
+                if (rawData.length > 0) {
+                    // 清理数据（转换NaN为null，确保字符串）
+                    rawData = rawData.map(item => {
+                        const clean = {};
+                        for (const key in item) {
+                            const value = item[key];
+                            clean[key] = (value === null || value === undefined || 
+                                         (typeof value === 'number' && isNaN(value))) ? 
+                                         null : String(value);
+                        }
+                        return clean;
+                    });
+
+                    filteredData = [...rawData];
+
+                    // 更新文件列表显示
+                    updateFileList();
+
+                    // 更新状态
+                    elements.resultsCount.textContent = rawData.length;
+                    updateStatusBar();
+
+                    // 初始渲染
+                    renderTable();
+
+                    console.log(`数据加载完成：成功加载 ${successCount}/${files.length} 个文件，共 ${rawData.length} 条记录`);
+                } else {
+                    console.error('所有文件加载失败或数据为空');
+                    elements.noDataMessage.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('数据加载过程出错:', error);
+                alert('数据加载失败：' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // 更新文件列表显示
+        function updateFileList() {
+            elements.fileList.innerHTML = '';
+            loadedFiles.forEach(file => {
+                const fileSize = (file.size / 1024).toFixed(2);
+                const badge = document.createElement('div');
+                badge.className = 'file-badge';
+                badge.innerHTML = `
+                    <span>${file.name}</span>
+                    <span style="font-size: 11px; color: #6c757d;">
+                        (${file.count}条, ${fileSize}KB)
+                    </span>
+                `;
+                elements.fileList.appendChild(badge);
+            });
+
+            // 更新统计信息
+            if (loadedFiles.length > 0) {
+                const totalSize = loadedFiles.reduce((sum, file) => sum + file.size, 0);
+                elements.fileStats.innerHTML = `
+                    共 ${loadedFiles.length} 个文件，${rawData.length} 条记录，
+                    总大小 ${(totalSize / 1024 / 1024).toFixed(2)} MB，
+                    最后更新时间：${new Date().toLocaleString('zh-CN')}
+                `;
+            }
+        }
+
+        // 应用筛选
+        function applyFilter() {
+            const pollutant = elements.pollutantInput.value.toLowerCase().trim();
+            const sample = elements.sampleInput.value.toLowerCase().trim();
+            const time = elements.timeInput.value.toLowerCase().trim();
+            const country = elements.countryInput.value.toLowerCase().trim();
+
+            filteredData = rawData.filter(item => {
+                const itemPollutant = (item['PollutantName.ABB'] || '').toLowerCase();
+                const itemSample = (item['Sample Type'] || '').toLowerCase();
+                const itemTime = (item['Sampling Time'] || '').toLowerCase();
+                const itemCountry = (item['Country'] || '').toLowerCase();
+
+                return (!pollutant || itemPollutant.includes(pollutant)) &&
+                       (!sample || itemSample.includes(sample)) &&
+                       (!time || itemTime.includes(time)) &&
+                       (!country || itemCountry.includes(country));
+            });
+
+            currentPage = 1;
+            renderTable();
+
+            // 添加高亮动画
+            const table = document.querySelector('.table-container');
+            table.classList.remove('highlight');
+            void table.offsetWidth; // 触发重绘
+            table.classList.add('highlight');
+        }
+
+        // 清空筛选条件
+        function clearFilters() {
+            elements.pollutantInput.value = '';
+            elements.sampleInput.value = '';
+            elements.timeInput.value = '';
+            elements.countryInput.value = '';
+
+            filteredData = [...rawData];
+            currentPage = 1;
+            renderTable();
+        }
+
+        // 重新加载数据
+        function reloadData() {
+            if (confirm('确定要重新加载所有数据吗？')) {
+                loadAllData();
+            }
+        }
+
+        // 渲染表格
+        function renderTable() {
+            if (filteredData.length === 0) {
+                elements.resultBody.innerHTML = '';
+                elements.noDataMessage.style.display = 'block';
+                elements.pagination.innerHTML = '';
+                elements.resultsCount.textContent = '0';
+                elements.currentRange.textContent = '0-0';
+                updateStatusBar();
+                return;
+            }
+
+            elements.noDataMessage.style.display = 'none';
+
+            // 计算分页
+            const totalPages = Math.ceil(filteredData.length / pageSize);
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, filteredData.length);
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            // 更新显示信息
+            elements.resultsCount.textContent = filteredData.length;
+            elements.currentRange.textContent = `${startIndex + 1}-${endIndex}`;
+            updateStatusBar();
+
+            // 渲染表格行
+            let tableHTML = '';
+            pageData.forEach((item, index) => {
+                const globalIndex = startIndex + index + 1;
+                tableHTML += `
+                    <tr>
+                        <td>${globalIndex}</td>
+                        <td class="cell-content" title="${item['PollutantName.ABB'] || ''}">
+                            ${item['PollutantName.ABB'] || '-'}
+                        </td>
+                        <td class="cell-content" title="${item['Sample Type'] || ''}">
+                            ${item['Sample Type'] || '-'}
+                        </td>
+                        <td class="cell-content" title="${item['Sampling Time'] || ''}">
+                            ${item['Sampling Time'] || '-'}
+                        </td>
+                        <td class="cell-content" title="${item['Country'] || ''}">
+                            ${item['Country'] || '-'}
+                        </td>
+                        <td>
+                            ${item['Mean (ng/g)'] || item['Mean'] || item['mean'] || '-'}
+                        </td>
+                        <td class="cell-content" title="${item['Remarks'] || item['Note'] || item['Comment'] || ''}">
+                            ${(item['Remarks'] || item['Note'] || item['Comment'] || '').substring(0, 30)}
+                            ${((item['Remarks'] || item['Note'] || item['Comment'] || '').length > 30 ? '...' : '')}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            elements.resultBody.innerHTML = tableHTML;
+            renderPagination(totalPages);
+        }
+
+        // 渲染分页
+        function renderPagination(totalPages) {
+            if (totalPages <= 1) {
+                elements.pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+
+            // 上一页按钮
+            paginationHTML += `
+                <button onclick="gotoPage(${currentPage - 1})" 
+                        ${currentPage === 1 ? 'disabled' : ''}>
+                    &laquo; 上一页
+                </button>
+            `;
+
+            // 页码按钮
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            if (startPage > 1) {
+                paginationHTML += `<button onclick="gotoPage(1)">1</button>`;
+                if (startPage > 2) paginationHTML += `<span>...</span>`;
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <button onclick="gotoPage(${i})" 
+                            class="${i === currentPage ? 'active' : ''}">
+                        ${i}
+                    </button>
+                `;
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) paginationHTML += `<span>...</span>`;
+                paginationHTML += `<button onclick="gotoPage(${totalPages})">${totalPages}</button>`;
+            }
+
+            // 下一页按钮
+            paginationHTML += `
+                <button onclick="gotoPage(${currentPage + 1})" 
+                        ${currentPage === totalPages ? 'disabled' : ''}>
+                    下一页 &raquo;
+                </button>
+            `;
+
+            // 页码信息
+            paginationHTML += `
+                <div class="page-info">
+                    第 ${currentPage} 页，共 ${totalPages} 页
+                </div>
+            `;
+
+            elements.pagination.innerHTML = paginationHTML;
+        }
+
+        // 跳转到指定页
+        function gotoPage(page) {
+            const totalPages = Math.ceil(filteredData.length / pageSize);
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            renderTable();
+
+            // 滚动到表格顶部
+            document.querySelector('.table-container').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // 导出数据
+        function exportData() {
+            if (filteredData.length === 0) {
+                alert('没有数据可导出');
+                return;
+            }
+
+            const format = elements.exportFormat.value;
+            let dataToExport = filteredData;
+            let filename = `pfas_data_${new Date().toISOString().slice(0, 10)}`;
+
+            switch (format) {
+                case 'json':
+                    const jsonStr = JSON.stringify(dataToExport, null, 2);
+                    downloadFile(filename + '.json', 'application/json', jsonStr);
+                    break;
+
+                case 'csv':
+                    // 获取所有列
+                    const allKeys = new Set();
+                    dataToExport.forEach(item => {
+                        Object.keys(item).forEach(key => allKeys.add(key));
+                    });
+                    const headers = Array.from(allKeys);
+
+                    // 构建CSV - 修复转义字符问题
+                    let csvContent = headers.join(',') + '\n';
+                    dataToExport.forEach(item => {
+                        const row = headers.map(header => {
+                            let value = item[header] || '';
+                            // 处理特殊字符
+                            if (typeof value === 'string') {
+                                value = value.replace(/"/g, '""');
+                                if (value.includes(',') || value.includes('\n') || value.includes('"')) {
+                                    value = '"' + value + '"';
+                                }
+                            }
+                            return value;
+                        });
+                        csvContent += row.join(',') + '\n';
+                    });
+
+                    // 添加BOM以支持中文
+                    const bom = '\uFEFF';
+                    downloadFile(filename + '.csv', 'text/csv;charset=utf-8;', bom + csvContent);
+                    break;
+
+                case 'excel':
+                    alert('Excel导出功能需要服务器支持，建议使用CSV格式导出后转换为Excel。');
+                    break;
+            }
+        }
+
+        // 下载文件
+        function downloadFile(filename, mimeType, content) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // 初始化
+        function init() {
+            console.log('初始化PFAS数据检索系统...');
+
+            // 绑定按钮事件监听器
+            elements.searchButton.addEventListener('click', applyFilter);
+            elements.clearButton.addEventListener('click', clearFilters);
+            elements.exportButton.addEventListener('click', exportData);
+            elements.reloadButton.addEventListener('click', reloadData);
+
+            // 为输入框添加回车键支持
+            const inputs = [elements.pollutantInput, elements.sampleInput, 
+                          elements.timeInput, elements.countryInput];
+
+            inputs.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        applyFilter();
+                    }
+                });
+            });
+
+            // 页面加载时自动加载数据
+            loadAllData();
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
