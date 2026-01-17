@@ -776,20 +776,31 @@
         async function loadFile(filename, index, total) {
             try {
                 updateProgress(index + 1, total, filename);
-
+        
                 const response = await fetch(filename);
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
-
+        
                 const data = await response.json();
-                console.log(`文件 ${filename} 加载成功，${data.length} 条记录`);
-
+        
+                // 确保 data 是数组
+                let dataArray = [];
+                if (Array.isArray(data)) {
+                    dataArray = data;
+                } else if (data && Array.isArray(data.records)) {
+                    dataArray = data.records;
+                } else {
+                    console.warn(`文件 ${filename} 数据格式不符合预期，将被忽略`);
+                }
+        
+                console.log(`文件 ${filename} 加载成功，${dataArray.length} 条记录`);
+        
                 return {
                     filename,
-                    data,
+                    data: dataArray,   // 注意这里返回的是数组
                     success: true,
-                    count: data.length,
+                    count: dataArray.length,
                     error: null
                 };
             } catch (error) {
@@ -810,75 +821,67 @@
             loadedFiles = [];
             rawData = [];
             filteredData = [];
-
+        
             try {
                 // 1. 检测文件
                 const files = await detectDataFiles();
-
+        
                 if (files.length === 0) {
                     showLoading(false);
                     alert('未找到任何数据文件！\n请确保存在以下文件之一：\n• data.json\n• data_part1.json\n• data_chunk_1.json\n\n或运行数据转换脚本生成文件。');
                     updateStatusBar();
                     return;
                 }
-
+        
                 // 2. 并行加载所有文件
                 showLoading(true, `正在加载 ${files.length} 个文件...`);
-
-                const loadPromises = files.map((file, index) => 
-                    loadFile(file, index, files.length)
-                );
-
+        
+                const loadPromises = files.map((file, index) => loadFile(file, index, files.length));
+        
                 const results = await Promise.all(loadPromises);
-
+        
                 // 3. 处理结果
                 let successCount = 0;
                 results.forEach(result => {
-                    if (result.success) {
+                    if (result.success && Array.isArray(result.data)) {
                         loadedFiles.push({
                             name: result.filename,
                             count: result.count,
                             size: JSON.stringify(result.data).length
                         });
-                        rawData.push(...result.data);
+                        rawData.push(...result.data);  // 安全展开
                         successCount++;
                     } else {
-                        console.warn(`文件 ${result.filename} 加载失败: ${result.error}`);
+                        console.warn(`文件 ${result.filename} 加载失败或数据为空: ${result.error}`);
                     }
                 });
-
-                // 4. 处理数据
+        
+                // 4. 清理数据 & 渲染
                 if (rawData.length > 0) {
-                    // 清理数据（转换NaN为null，确保字符串）
                     rawData = rawData.map(item => {
                         const clean = {};
                         for (const key in item) {
                             const value = item[key];
-                            clean[key] = (value === null || value === undefined || 
-                                         (typeof value === 'number' && isNaN(value))) ? 
+                            clean[key] = (value === null || value === undefined ||
+                                         (typeof value === 'number' && isNaN(value))) ?
                                          null : String(value);
                         }
                         return clean;
                     });
-
+        
                     filteredData = [...rawData];
-
-                    // 更新文件列表显示
+        
                     updateFileList();
-
-                    // 更新状态
                     elements.resultsCount.textContent = rawData.length;
                     updateStatusBar();
-
-                    // 初始渲染
                     renderTable();
-
+        
                     console.log(`数据加载完成：成功加载 ${successCount}/${files.length} 个文件，共 ${rawData.length} 条记录`);
                 } else {
                     console.error('所有文件加载失败或数据为空');
                     elements.noDataMessage.style.display = 'block';
                 }
-
+        
             } catch (error) {
                 console.error('数据加载过程出错:', error);
                 alert('数据加载失败：' + error.message);
