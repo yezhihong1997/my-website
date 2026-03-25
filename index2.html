@@ -871,27 +871,14 @@
                 const files = await detectDataFiles();
         
                 if (files.length === 0) {
-                    showLoading(true, 'Checking for data files...'); // 先显示加载层
-                    setTimeout(() => {
-                        alert(
-                            'No data files found!
-Please make sure at least one of the following files exists:
-' +
-                            '• data.json
-• data_part1.json
-• data_chunk_1.json
-
-' +
-                            'Or run the data conversion script to generate the files.'
-                        );
-                        showLoading(false);  // 延迟隐藏
-                        updateStatusBar();
-                    }, 1200); // 0.8 秒延迟
+                    showLoading(false);
+                    alert('No data files found!\nPlease make sure at least one of the following files exists:\n• data.json\n• data_part1.json\n• data_chunk_1.json\n\nOr run the data conversion script to generate the files.');
+                    updateStatusBar();
                     return;
                 }
         
                 // 2. 并行加载所有文件
-                showLoading(true, Loading ${files.length} files...);
+                showLoading(true, `Loading ${files.length} files...`);
         
                 const loadPromises = files.map((file, index) => loadFile(file, index, files.length));
         
@@ -909,7 +896,7 @@ Please make sure at least one of the following files exists:
                         rawData.push(...result.data);  // 安全展开
                         successCount++;
                     } else {
-                        console.warn(Failed to load file ${result.filename} or data is empty: ${result.error});
+                        console.warn(`Failed to load file ${result.filename} or data is empty: ${result.error}`);
                     }
                 });
         
@@ -933,7 +920,7 @@ Please make sure at least one of the following files exists:
                     updateStatusBar();
                     renderTable();
         
-                    console.log(Data loading complete: Successfully loaded ${successCount}/${files.length} files, with a total of ${rawData.length} records);
+                    console.log(`Data loading complete: Successfully loaded ${successCount}/${files.length} files, with a total of ${rawData.length} records`);
                 } else {
                     console.error('All files failed to load or contain no data');
                     elements.noDataMessage.style.display = 'block';
@@ -1017,7 +1004,7 @@ Please make sure at least one of the following files exists:
 
         // 重新加载数据
         function reloadData() {
-            if (confirm('确定要重新加载所有数据吗？')) {
+            if (confirm('Are you sure you want to reload all data？')) {
                 loadAllData();
             }
         }
