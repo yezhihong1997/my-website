@@ -1145,38 +1145,41 @@
                 block: 'start'
             });
         }
-
+        let ENABLE_EXPORT = false;   // ❌ 关闭导出（以后改成 true 即可开启）
         // 导出数据
         function exportData() {
+            // ✅ 导出开关控制
+            if (!ENABLE_EXPORT) {
+                alert('Export function is temporarily disabled and will be available in a future version.');
+                return;
+            }
+        
             if (filteredData.length === 0) {
                 alert('No data available for export');
                 return;
             }
-
+        
             const format = elements.exportFormat.value;
             let dataToExport = filteredData;
             let filename = `pfas_data_${new Date().toISOString().slice(0, 10)}`;
-
+        
             switch (format) {
                 case 'json':
                     const jsonStr = JSON.stringify(dataToExport, null, 2);
                     downloadFile(filename + '.json', 'application/json', jsonStr);
                     break;
-
+        
                 case 'csv':
-                    // 获取所有列
                     const allKeys = new Set();
                     dataToExport.forEach(item => {
                         Object.keys(item).forEach(key => allKeys.add(key));
                     });
                     const headers = Array.from(allKeys);
-
-                    // 构建CSV - 修复转义字符问题
+        
                     let csvContent = headers.join(',') + '\n';
                     dataToExport.forEach(item => {
                         const row = headers.map(header => {
                             let value = item[header] || '';
-                            // 处理特殊字符
                             if (typeof value === 'string') {
                                 value = value.replace(/"/g, '""');
                                 if (value.includes(',') || value.includes('\n') || value.includes('"')) {
@@ -1187,12 +1190,11 @@
                         });
                         csvContent += row.join(',') + '\n';
                     });
-
-                    // 添加BOM以支持中文
+        
                     const bom = '\uFEFF';
                     downloadFile(filename + '.csv', 'text/csv;charset=utf-8;', bom + csvContent);
                     break;
-
+        
                 case 'excel':
                     alert('Excel export requires server support. It is recommended to export as CSV and then convert to Excel.');
                     break;
