@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFAS 数据检索系统</title>
+    <title>A PFAS Dataset Enabling Geographic and Temporal Analysis</title>
     <style>
         * {
             margin: 0;
@@ -43,8 +43,8 @@
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: white;
             border-radius: 50%;
             display: flex;
@@ -548,34 +548,34 @@
         <header>
             <div class="logo">
                 <div class="logo-icon">PFAS</div>
-                <h1>PFAS 数据检索分析系统</h1>
+                <h1>PFAS data search & analysis</h1>
             </div>
             <div class="header-right">
                 <a href="index.html" class="home-link">
                     <span>🏠</span>
-                    返回主页
+                    Return to home
                 </a>
                 <div style="color: rgba(255,255,255,0.9); font-size: 14px;">
-                    动态数据加载 • 实时检索
+                    Dynamic data loading • real-time search
                 </div>
             </div>
         </header>
 
         <div class="status-bar">
             <div class="status-item">
-                <span>数据状态:</span>
-                <span class="status-badge info" id="dataStatus">检测中...</span>
+                <span>Data status:</span>
+                <span class="status-badge info" id="dataStatus">Detecting...</span>
             </div>
             <div class="status-item">
-                <span>文件数量:</span>
+                <span>Number of files:</span>
                 <span class="status-badge info" id="fileCount">0</span>
             </div>
             <div class="status-item">
-                <span>总记录数:</span>
+                <span>Total records:</span>
                 <span class="status-badge success" id="totalRecords">0</span>
             </div>
             <div class="status-item">
-                <span>筛选记录:</span>
+                <span>Filtered records:</span>
                 <span class="status-badge warning" id="filteredRecords">0</span>
             </div>
         </div>
@@ -583,70 +583,70 @@
         <div class="loading-overlay" id="loadingOverlay">
             <div class="spinner"></div>
             <div style="text-align: center;">
-                <h3 style="color: #007acc; margin-bottom: 10px;">正在加载数据...</h3>
+                <h3 style="color: #007acc; margin-bottom: 10px;">Loading data...</h3>
                 <p id="loadingText" style="color: #666; max-width: 400px;">
-                    正在检测并加载数据文件，请稍候...
+                    Detecting and loading data files, please wait...
                 </p>
                 <div id="fileProgress" style="margin-top: 20px; font-size: 14px; color: #888;"></div>
             </div>
         </div>
 
         <section class="search-section">
-            <h2 class="section-title">数据检索</h2>
+            <h2 class="section-title">Data Search</h2>
             <div class="search-grid">
                 <div class="search-field">
-                    <label for="pollutantInput">污染物名称 (PollutantName.ABB)</label>
+                    <label for="pollutantInput">Pollutant name</label>
                     <input type="text" id="pollutantInput" class="search-input" 
-                           placeholder="例如: PFOS, PFOA, PFHxS">
+                           placeholder="Example: PFOS, PFOA, PFHxS">
                 </div>
                 <div class="search-field">
-                    <label for="sampleInput">样品类型 (Sample Type)</label>
+                    <label for="sampleInput">Sample type</label>
                     <input type="text" id="sampleInput" class="search-input" 
-                           placeholder="例如: Fish, Meat, Vegetable">
+                           placeholder="Example: Fish, Meat, Vegetable">
                 </div>
                 <div class="search-field">
-                    <label for="timeInput">采样时间 (Sampling Time)</label>
+                    <label for="timeInput">Sampling time</label>
                     <input type="text" id="timeInput" class="search-input" 
-                           placeholder="例如: 2021, 2022, 2023">
+                           placeholder="Example: 2021, 2022, 2023">
                 </div>
                 <div class="search-field">
-                    <label for="countryInput">国家/地区 (Country)</label>
+                    <label for="countryInput">Country/Region</label>
                     <input type="text" id="countryInput" class="search-input" 
-                           placeholder="例如: China, USA, Germany">
+                           placeholder="Example: China, USA, Germany">
                 </div>
             </div>
 
             <div class="button-group">
                 <button class="btn btn-primary" id="searchButton">
-                    <span>🔍</span> 开始检索
+                    <span>🔍</span> Start search
                 </button>
                 <button class="btn btn-secondary" id="clearButton">
-                    <span>🗑️</span> 清空条件
+                    <span>🗑️</span> Clear filters
                 </button>
                 <button class="btn btn-success" id="exportButton">
-                    <span>📥</span> 导出数据
+                    <span>📥</span> Export data
                 </button>
                 <button class="btn btn-warning" id="reloadButton">
-                    <span>🔄</span> 重新加载
+                    <span>🔄</span> Reload
                 </button>
             </div>
         </section>
 
         <section class="results-section">
             <div class="results-header">
-                <h2 class="section-title">检索结果</h2>
+                <h2 class="section-title">Search results</h2>
                 <div class="export-section">
                     <select id="exportFormat" class="export-format">
-                        <option value="json">导出为 JSON</option>
-                        <option value="csv">导出为 CSV</option>
-                        <option value="excel">导出为 Excel</option>
+                        <option value="json">Export as JSON</option>
+                        <option value="csv">Export as CSV</option>
+                        <option value="excel">Export as Excel</option>
                     </select>
                 </div>
             </div>
 
             <div class="results-count">
-                共找到 <strong id="resultsCount">0</strong> 条记录，
-                显示第 <strong id="currentRange">0-0</strong> 条
+                Found <strong id="resultsCount">0</strong> records, 
+                displaying <strong id="currentRange">0-0</strong>
             </div>
 
             <div class="table-container">
@@ -654,44 +654,41 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>污染物名称</th>
-                            <th>样品类型</th>
-                            <th>采样时间</th>
-                            <th>国家/地区</th>
-                            <th>平均值 (ng/g)</th>
-                            <th>备注</th>
+                            <th>Pollutant name</th>
+                            <th>Sample type</th>
+                            <th>Sampling date</th>
+                            <th>Country/Region</th>
+                            <th>Average (ng/g)</th>
+                            <th>Remarks</th>
                         </tr>
                     </thead>
                     <tbody id="resultBody">
-                        <!-- 数据将通过JavaScript动态插入 -->
+                        <!-- Data will be dynamically inserted via JavaScript -->
                     </tbody>
                 </table>
             </div>
 
             <div id="noDataMessage" class="no-data" style="display: none;">
-                暂无数据或未找到匹配的记录
+                No data available or no matching records found
             </div>
-
+            
             <div class="pagination" id="pagination">
-                <!-- 分页将通过JavaScript动态生成 -->
+                <!-- Pagination will be dynamically generated via JavaScript -->
             </div>
-
+            
             <div class="data-files-info">
-                <h4>已加载的数据文件</h4>
+                <h4>Loaded data files</h4>
                 <div id="fileList" class="file-list">
-                    <!-- 文件列表将通过JavaScript动态生成 -->
+                    <!-- File list will be dynamically generated via JavaScript -->
                 </div>
                 <div id="fileStats" style="margin-top: 10px; font-size: 13px; color: #666;">
-                    <!-- 文件统计信息 -->
+                    <!-- File statistics -->
                 </div>
             </div>
         </section>
 
         <footer>
-            <p>PFAS 数据检索系统 | 数据更新时间: <span id="updateTime">-</span></p>
-            <p style="margin-top: 5px; font-size: 12px; color: #888;">
-                本系统支持动态检测和加载数据文件，支持 data.json、data_part*.json、data_chunk_*.json 等格式
-            </p>
+            <p>© 2026 PFAS Data Search | Last Updated: <span id="updateTime">-</span></p>
         </footer>
     </div>
 
@@ -733,7 +730,7 @@
         };
 
         // 显示/隐藏加载动画
-        function showLoading(show, text = '正在加载数据...') {
+        function showLoading(show, text = 'Loading data...') {
             elements.loadingOverlay.classList.toggle('active', show);
             if (show) {
                 elements.loadingText.textContent = text;
@@ -743,15 +740,15 @@
         // 更新加载进度
         function updateProgress(current, total, filename) {
             elements.fileProgress.innerHTML = `
-                <div>正在加载文件: ${filename}</div>
-                <div>进度: ${current}/${total}</div>
+                <div>Loading file:${filename}</div>
+                <div>Progress:${current}/${total}</div>
                 <progress value="${current}" max="${total}" style="width: 300px; margin-top: 5px;"></progress>
             `;
         }
 
         // 更新状态栏
         function updateStatusBar() {
-            elements.dataStatus.textContent = loadedFiles.length > 0 ? '已加载' : '未加载';
+            elements.dataStatus.textContent = loadedFiles.length > 0 ? 'Loaded' : 'Not loaded';
             elements.dataStatus.className = loadedFiles.length > 0 ? 'status-badge success' : 'status-badge warning';
 
             elements.fileCount.textContent = loadedFiles.length;
@@ -764,7 +761,7 @@
 
         // 动态检测数据文件
         async function detectDataFiles() {
-            console.log('开始检测数据文件...');
+            console.log('Starting data file check...'); 
 
             const testFiles = [
                 'data.json',                    // 单个文件
@@ -864,7 +861,7 @@
 
         // 加载所有数据
         async function loadAllData() {
-            showLoading(true, '正在检测数据文件...');
+            showLoading(true, 'Checking data files...');
             loadedFiles = [];
             rawData = [];
             filteredData = [];
@@ -874,14 +871,27 @@
                 const files = await detectDataFiles();
         
                 if (files.length === 0) {
-                    showLoading(false);
-                    alert('未找到任何数据文件！\n请确保存在以下文件之一：\n• data.json\n• data_part1.json\n• data_chunk_1.json\n\n或运行数据转换脚本生成文件。');
-                    updateStatusBar();
+                    showLoading(true, 'Checking for data files...'); // 先显示加载层
+                    setTimeout(() => {
+                        alert(
+                            'No data files found!
+Please make sure at least one of the following files exists:
+' +
+                            '• data.json
+• data_part1.json
+• data_chunk_1.json
+
+' +
+                            'Or run the data conversion script to generate the files.'
+                        );
+                        showLoading(false);  // 延迟隐藏
+                        updateStatusBar();
+                    }, 1200); // 0.8 秒延迟
                     return;
                 }
         
                 // 2. 并行加载所有文件
-                showLoading(true, `正在加载 ${files.length} 个文件...`);
+                showLoading(true, Loading ${files.length} files...);
         
                 const loadPromises = files.map((file, index) => loadFile(file, index, files.length));
         
@@ -899,7 +909,7 @@
                         rawData.push(...result.data);  // 安全展开
                         successCount++;
                     } else {
-                        console.warn(`文件 ${result.filename} 加载失败或数据为空: ${result.error}`);
+                        console.warn(Failed to load file ${result.filename} or data is empty: ${result.error});
                     }
                 });
         
@@ -923,15 +933,15 @@
                     updateStatusBar();
                     renderTable();
         
-                    console.log(`数据加载完成：成功加载 ${successCount}/${files.length} 个文件，共 ${rawData.length} 条记录`);
+                    console.log(Data loading complete: Successfully loaded ${successCount}/${files.length} files, with a total of ${rawData.length} records);
                 } else {
-                    console.error('所有文件加载失败或数据为空');
+                    console.error('All files failed to load or contain no data');
                     elements.noDataMessage.style.display = 'block';
                 }
         
             } catch (error) {
-                console.error('数据加载过程出错:', error);
-                alert('数据加载失败：' + error.message);
+                console.error('Error during data loading:', error);
+                alert('Data loading failed: ' + error.message);
             } finally {
                 showLoading(false);
             }
@@ -957,9 +967,9 @@
             if (loadedFiles.length > 0) {
                 const totalSize = loadedFiles.reduce((sum, file) => sum + file.size, 0);
                 elements.fileStats.innerHTML = `
-                    共 ${loadedFiles.length} 个文件，${rawData.length} 条记录，
-                    总大小 ${(totalSize / 1024 / 1024).toFixed(2)} MB，
-                    最后更新时间：${new Date().toLocaleString('zh-CN')}
+                    Total ${loadedFiles.length} files, ${rawData.length} records,
+                    Total size: ${(totalSize / 1024 / 1024).toFixed(2)} MB,
+                    Last updated: ${new Date().toLocaleString()}
                 `;
             }
         }
@@ -1084,7 +1094,7 @@
             paginationHTML += `
                 <button onclick="gotoPage(${currentPage - 1})" 
                         ${currentPage === 1 ? 'disabled' : ''}>
-                    &laquo; 上一页
+                    &laquo; Previous page
                 </button>
             `;
 
@@ -1120,14 +1130,14 @@
             paginationHTML += `
                 <button onclick="gotoPage(${currentPage + 1})" 
                         ${currentPage === totalPages ? 'disabled' : ''}>
-                    下一页 &raquo;
+                    Next page &raquo;
                 </button>
             `;
 
             // 页码信息
             paginationHTML += `
                 <div class="page-info">
-                    第 ${currentPage} 页，共 ${totalPages} 页
+                    Page ${currentPage} of ${totalPages}
                 </div>
             `;
 
@@ -1152,7 +1162,7 @@
         // 导出数据
         function exportData() {
             if (filteredData.length === 0) {
-                alert('没有数据可导出');
+                alert('No data available for export');
                 return;
             }
 
@@ -1197,7 +1207,7 @@
                     break;
 
                 case 'excel':
-                    alert('Excel导出功能需要服务器支持，建议使用CSV格式导出后转换为Excel。');
+                    alert('Excel export requires server support. It is recommended to export as CSV and then convert to Excel.');
                     break;
             }
         }
@@ -1217,7 +1227,7 @@
 
         // 初始化
         function init() {
-            console.log('初始化PFAS数据检索系统...');
+            console.log('Initializing PFAS Data Search plantform...');
 
             // 绑定按钮事件监听器
             elements.searchButton.addEventListener('click', applyFilter);

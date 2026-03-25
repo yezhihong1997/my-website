@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFAS数据检索系统 - 首页</title>
+    <title>A PFAS Dataset Enabling Geographic and Temporal Analysis</title>
     <style>
         /* ========== 全局样式 ========== */
         body { 
@@ -35,8 +35,8 @@
             gap: 12px;
         }
         .logo-icon {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             background: white;
             border-radius: 50%;
             display: flex;
@@ -291,13 +291,13 @@
     <nav>
         <div class="logo">
             <div class="logo-icon">PFAS</div>
-            <div class="site-title">PFAS数据检索系统</div>
+            <div class="site-title">PFAS data search & analysis</div>
         </div>
         <div class="nav-links">
-            <a href="#intro" class="nav-link active">🏠 首页</a>
-            <a href="#features" class="nav-link">✨ 内容描述</a>
-            <a href="#contact" class="nav-link">📞 联系我们</a>
-            <a href="index2.html" class="button" style="padding: 8px 20px; margin: 0;">🚀 进入系统</a>
+            <a href="#intro" class="nav-link active">🏠 Home</a>
+            <a href="#features" class="nav-link">✨ About</a>
+            <a href="#contact" class="nav-link">📞 Contact Us</a>
+            <a href="index2.html" class="button" style="padding: 8px 20px; margin: 0;">🚀 Get started</a>
         </div>
     </nav>
 
@@ -306,70 +306,76 @@
 
         <!-- 首页简介 -->
         <section id="intro" class="hero">
-            <h1>欢迎使用 PFAS 数据检索分析系统</h1>
+            <h1>Welcome to the PFAS data search and analysis platform</h1>
             <p style="font-size: 18px; color: #555; line-height: 1.6; max-width: 800px; margin: 20px auto;">
-                研究内容一句话总结。
+                A dataset capable to support geographic and temporal analysis.
             </p>
 
             <div class="stats">
                 <div class="stat-item">
-                    <span class="stat-number" id="dataCount">0</span>
-                    <span class="stat-label">数据记录</span>
+                    <span class="stat-number" id="dataCount">112</span>
+                    <span class="stat-label">PFAS types</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">20+</span>
-                    <span class="stat-label">PFAS污染物种类</span>
+                    <span class="stat-number">35045</span>
+                    <span class="stat-label">Aquatic samples</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">10+</span>
-                    <span class="stat-label">样本来源种类</span>
+                    <span class="stat-number">11634</span>
+                    <span class="stat-label">Terrestrial samples</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">50+</span>
-                    <span class="stat-label">国家地区</span>
+                    <span class="stat-number">29</span>
+                    <span class="stat-label">Large marine ecosystems</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">76</span>
+                    <span class="stat-label">Inner land waters</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">96</span>
+                    <span class="stat-label">Nations</span>
                 </div>
             </div>
 
             <button onclick="window.location.href='index2.html'" class="button">
-                <span>🚀</span> 立即开始检索
+                <span>🚀</span> Begin search
             </button>
         </section>
 
         <!-- 功能特性 -->
         <section id="features">
-            <h2>✨ 研究内容描述</h2>
+            <h2>✨ Data collection</h2>
             <p style="color: #666; margin-bottom: 25px;">
-                替换研究内容概述。
+                Article reports for field measurement and dietary surveys were searched from “Web of Science”, “PubMed”, “ScienceDirect”, and “Taylor & Francis Online”. Statistic measures of the concentration of PFAS mixture or individual, including the means, mediums, standard deviations, minimum, maximum, number of samples, and time of sampling were scripted. The terrestrial food types were determined based on Food and Agriculture Organization of the United Nations (FAO) category, “Bovine Meat”, “Mutton & Goat Meat”, “Pigmeat”, “Poultry Meat”, “Meat, Other” (including edible offal, processed and cooked food), and “Eggs”. Those of aquatic food were categorized by “Meat, Aquatic Mammals”, “Aquatic Animals, Others”, “Mollusc”, “Crustacean”, “Freshwater fish” and “Marine fish”, of which “Marine fish” was further categorized into “Demersal”, “Pelagic”, and “Mix” (for both demersal and pelagic) to fit the FAO category. In addition, the processed fishery food would be categorized as “Cooked”, referring “Fish, Others” in FAO category. The categorization of fish was based on “FishBase” by searching its nick name or scientific name, if available in article, or based on the water types-lake, river, and ocean-of sampling sites. To ensure data quality, recovery and limit of measurement-limit of detection (LOD) and/or limit of quantification (LOQ) must be nominated in the article or its supplementary information. To confine the food type of gathering fitting our research scope-animal sourced food-we included only concentrations of aquatic animal muscle. The wild territorial animals were not included, unless they were hunted for food.
             </p>
 
             <div class="card-container">
                 <div class="card">
-                    <h3>内容1</h3>
+                    <h3>Major discovery</h3>
                     <ul class="feature-list">
-                        <li>***</li>
-                        <li>***</li>
-                        <li>***</li>
-                        <li>***</li>
+                        <li>Data span 1987~2023</li>
+                        <li>Top 7 frequently measured PFAS are PFOS, PFOA, PFNA, PFUnA, PFDeA, PFDoA, and PFHxS.</li>
+                        <li>Aquatic food, especially freshwater fishes, usually contain more PFAS than terrestrial food.</li>
+                        <li>PFAS concentration is generally reducing in aquatic food from 2000 to 2023.</li>
                     </ul>
                 </div>
 
                 <div class="card">
-                    <h3>内容2</h3>
+                    <h3>Geographic pattern</h3>
                     <ul class="feature-list">
-                        <li>***</li>
-                        <li>***</li>
-                        <li>***</li>
-                        <li>***</li>
+                        <li>PFAS in livestock meat is lower than that in aquatic food in all continents.</li>
+                        <li>Aquatic food from North America, Europe, and East Asia has more PFAS than those from South America, Oceania, and Africa.</li>
+                        <li>Fishes from inner land water contain more PFAS than that in fishes from pelagic ocean.</li>
                     </ul>
                 </div>
 
                 <div class="card">
-                    <h3>内容3</h3>
+                    <h3>Time trend</h3>
                     <ul class="feature-list">
-                        <li>***</li>
-                        <li>***</li>
-                        <li>***</li>
-                        <li>***</li>
+                        <li>PFAS in aquatic food was decreasing from 2000 to 2023, but not significantly changed in terrestrial food.</li>
+                        <li>There might be 3 stages of PFAS reduction in aquatic food: before 2010 (not change), 2011-2015 (fast reduction), and after 2016 (not change).</li>
+                        <li>PFOA in pelagic fishes from East Asia was increasing from 2015 to 2023.</li>
                     </ul>
                 </div>
             </div>
@@ -377,82 +383,81 @@
 
         <!-- 快速开始 -->
         <section id="quick-start">
-            <h2>🚀 快速开始</h2>
+            <h2>🚀 Get started</h2>
             <p style="color: #666; margin-bottom: 25px;">
-                只需三步，即可开始使用PFAS数据检索系统：
+                Start using the PFAS data search platform in just three simple steps:
             </p>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin: 30px 0;">
-
                 <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; text-align: center; position: relative;">
                     <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #007acc; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
                     <div style="font-size: 36px; margin: 15px 0;">🌐</div>
-                    <h4 style="margin: 10px 0;">打开检索系统</h4>
+                    <h4 style="margin: 10px 0;">Open the platform</h4>
                     <p style="color: #666; margin: 10px 0; font-size: 14px;">
-                        用浏览器点击右上角的进入系统图标，系统自动加载数据
+                        Click the “Get started” button in the top-right corner using your browser, and the system will automatically load the data.
                     </p>
                 </div>
 
                 <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; text-align: center; position: relative;">
                     <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #007acc; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
                     <div style="font-size: 36px; margin: 15px 0;">🔍</div>
-                    <h4 style="margin: 10px 0;">开始检索分析</h4>
+                    <h4 style="margin: 10px 0;">Start search and analysis</h4>
                     <p style="color: #666; margin: 10px 0; font-size: 14px;">
-                        输入关键词，点击"开始检索"，查看分析结果
+                        Enter keywords and click “Search” to view the analysis results.
                     </p>
                 </div>
                 
                 <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; text-align: center; position: relative;">
                     <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #007acc; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
                     <div style="font-size: 36px; margin: 15px 0;">📁</div>
-                    <h4 style="margin: 10px 0;">数据文件导出</h4>
+                    <h4 style="margin: 10px 0;">Export data</h4>
                     <p style="color: #666; margin: 10px 0; font-size: 14px;">
-                        选择期望到处数据文件格式，导出当前检索数据
+                        Choose your desired file format and export the current search results.
                     </p>
                 </div>
             </div>
 
             <div style="background: #e7f3ff; padding: 20px; border-radius: 10px; margin-top: 25px; border-left: 4px solid #007acc;">
-                <h4 style="color: #007acc; margin-top: 0;">💡 使用技巧</h4>
+                <h4 style="color: #007acc; margin-top: 0;">💡 Tips & tricks</h4>
                 <ul style="color: #555; line-height: 1.6;">
-                    <li>使用多个关键词组合搜索可以精确筛选结果</li>
-                    <li>点击表格单元格可以查看完整内容（悬浮提示）</li>
-                    <li>支持导出筛选结果进行进一步分析</li>
-                    <li>系统会自动保存搜索条件，刷新页面不会丢失</li>
-                    <li>推荐使用Chrome或Edge浏览器获得最佳体验</li>
+                    <li>Use multiple keywords together to filter results more precisely.</li>
+                    <li>Click on table cells to view full content (hover tooltips available).</li>
+                    <li>Export filtered results for further analysis.</li>
+                    <li>The system automatically saves your search settings, so refreshing the page won't lose them.</li>
+                    <li>For the best experience, use Chrome or Edge browsers.</li>
                 </ul>
             </div>
         </section>
 
         <!-- 联系区 -->
         <section id="contact">
-            <h2>📞 联系我们</h2>
+            <h2>📞 Contact us</h2>
             <p style="font-size: 16px; color: #555; line-height: 1.6;">
-                如果您在使用过程中遇到任何问题，欢迎通过以下方式联系我们。
+                If you encounter any issues while using the platform, please feel free to contact us using the methods below.
             </p>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin: 30px 0;">
                 <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; text-align: center;">
                     <div style="font-size: 36px; margin-bottom: 15px;">📧</div>
-                    <h4 style="margin: 10px 0;">技术支持</h4>
-                    <p style="color: #666; margin: 10px 0;">yezhihong1997@email.com</p>
+                    <h4 style="margin: 10px 0;">Technical support</h4>
+                    <p style="color: #666; margin: 10px 0;">****@email.com</p>
                 </div>
 
                 <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; text-align: center;">
                     <div style="font-size: 36px; margin-bottom: 15px;">🐙</div>
-                    <h4 style="margin: 10px 0;">GitHub项目</h4>
+                    <h4 style="margin: 10px 0;">GitHub project</h4>
                     <p style="color: #666; margin: 10px 0;">
                         <a href="https://github.com/yezhihong1997" target="_blank" style="color: #007acc;">
-                            github.com/yezhihong1997
+                            github.com/******
                         </a>
                     </p>
                 </div>
 
                 <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; text-align: center;">
                     <div style="font-size: 36px; margin-bottom: 15px;">📚</div>
-                    <h4 style="margin: 10px 0;">论文doi</h4>
+                    <h4 style="margin: 10px 0;">Paper DOI</h4>
                     <p style="color: #666; margin: 10px 0;">
-                        论文的doi***
+                        DOI of the paper (not available yet)
                     </p>
                 </div>
             </div>
@@ -462,19 +467,13 @@
     <!-- 页脚 -->
     <footer>
         <div style="max-width: 800px; margin: 0 auto;">
-            <h3 style="color: #007acc;">论文名******</h3>
-
-            <div class="social-links">
-                <a href="https://github.com/yezhihong1997" target="_blank">GitHub</a>
-                <a href="mailto:yezhihong1997@example.com">Email</a>
-            </div>
-
+            <h3 style="color: #007acc;">Paper Title******</h3>
             <p style="margin-top: 20px; font-size: 13px; color: #888;">
-                © 2026 PFAS数据检索 | 最后更新: <span id="currentDate"></span> | 
-                <span id="versionInfo">版本 1.0.0</span>
+                © 2026 PFAS Data Search | Last Updated: <span id="currentDate"></span> | 
+                <span id="versionInfo">Version 1.0.0</span>
             </p>
             <p style="font-size: 12px; color: #aaa; margin-top: 10px;">
-                本系统基于纯前端技术构建，无需服务器支持，保障数据安全。
+                This system is built entirely with front-end technologies, requiring no server support, ensuring security.
             </p>
         </div>
     </footer>
@@ -538,26 +537,6 @@
                 document.body.style.opacity = '1';
             }, 100);
         });
-
-        // 键盘快捷键
-        document.addEventListener('keydown', (e) => {
-            // Alt + S 跳转到检索系统
-            if (e.altKey && e.key === 's') {
-                window.location.href = 'index2.html';
-            }
-            // Alt + H 返回首页
-            if (e.altKey && e.key === 'h') {
-                window.location.href = 'index.html';
-            }
-        });
-
-        // 显示键盘快捷键提示
-        setTimeout(() => {
-            console.log('📋 键盘快捷键:');
-            console.log('  Alt + S - 跳转到检索系统');
-            console.log('  Alt + H - 返回首页');
-        }, 2000);
     </script>
-
 </body>
 </html>
